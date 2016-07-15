@@ -11,6 +11,14 @@ program
 
 const projectName = program.name || defaultProjectName();
 const projectDirectory = path.join(process.cwd(), projectName);
+
+//let's make sure the directory doesn't already exist
+
+if (directoryExists(projectDirectory)) {
+  console.log(`directory "${projectName}" already exists.`);
+  process.exit();
+}
+
 const moduleLibsDir = path.join(__dirname, 'p5');
 const libsByName = {
   sound: 'p5.sound.js',
@@ -79,4 +87,16 @@ function copyFile(src, dest) {
   fs
     .createReadStream(src)
     .pipe(fs.createWriteStream(dest));
+}
+
+function directoryExists(dir) {
+  let exists = false;
+  
+  try {
+    exists = fs.statSync(dir).isDirectory();
+    return exists;
+  }
+  catch(e) {
+    return exists;
+  }
 }
