@@ -12,7 +12,6 @@ program
 const projectName = program.name || defaultProjectName();
 const projectDirectory = path.join(process.cwd(), projectName);
 const moduleLibsDir = path.join(__dirname, 'p5');
-const presentLibs = fs.readdirSync(moduleLibsDir);
 const libsByName = {
   sound: 'p5.sound.js',
   dom: 'p5.dom.js',
@@ -31,8 +30,6 @@ fs.mkdirSync(path.join(projectDirectory, 'libraries'));
 copyFile(path.join(moduleLibsDir, 'p5.js'), path.join(projectDirectory, 'libraries', 'p5.js'));
 
 // adding the libraries
-// if the user hasn't specified which libraries she wants, we're just going to include them all!
-// ...starting with p5 itself (order here is important!
 
 libraries.forEach(function(lib) {
   fs
