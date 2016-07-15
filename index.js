@@ -6,10 +6,11 @@ const program = require('commander');
 
 program
   .version('0.0.1')
-  .option('-n, --name [project-name]', 'Project name')
+  .option('-n, --sketch-name [sketch-name]', 'sketch name')
+  .option('-l, --libs [libs]')
   .parse(process.argv);
 
-const projectName = program.name || defaultProjectName();
+const projectName = program.sketchName || defaultProjectName();
 const projectDirectory = path.join(process.cwd(), projectName);
 
 //let's make sure the directory doesn't already exist
@@ -80,7 +81,11 @@ function draw() {
 fs.writeFileSync(path.join(projectDirectory, 'sketch.js'), sketchBoilerplate);
 
 function defaultProjectName() {
-  return "sketch_0";  
+  let sketchNumber = 0;
+  while (directoryExists(path.join(process.cwd(), `sketch_${sketchNumber.toString()}`))) {
+    sketchNumber++;
+  }
+  return `sketch_${sketchNumber}`;
 }
 
 function copyFile(src, dest) {
@@ -90,13 +95,10 @@ function copyFile(src, dest) {
 }
 
 function directoryExists(dir) {
-  let exists = false;
-  
   try {
-    exists = fs.statSync(dir).isDirectory();
-    return exists;
+    return fs.statSync(dir).isDirectory();
   }
   catch(e) {
-    return exists;
+    return false;
   }
 }
